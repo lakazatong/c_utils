@@ -2,6 +2,6 @@
 #define ALL_UTILS_H
 
 #include "list.h"
-#include "list.c"
+#include "queue.h"
 
 #endif
