@@ -148,7 +148,7 @@ sQueue* new_squeue(int initial_capacity) {
 	return queue;
 }
 
-void squeue_push(sQueue* queue, const char* element) {
+void squeue_push(sQueue* queue, char* element) {
 	if (queue->size == queue->capacity) {
 		queue->capacity *= 2;
 		queue->elements = (char**)realloc(queue->elements, queue->capacity * sizeof(char*));
