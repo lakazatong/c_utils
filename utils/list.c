@@ -2,10 +2,14 @@
 
 List* new_list(int initial_capacity) {
 	List* list = malloc(sizeof(List));
+	if (list == NULL) {
+		printf("new_list: Failed to allocate memory for list.\n");
+		return NULL;
+	}
 	list->elements = malloc(initial_capacity * sizeof(void*));
 	if (list->elements == NULL) {
 		// Error handling - failed to allocate memory
-		printf("Failed to allocate memory for list.\n");
+		printf("new_list: Failed to allocate memory for list->elements.\n");
 		list->size = 0;
 		list->capacity = 0;
 		return list;
@@ -20,9 +24,13 @@ List* new_list(int initial_capacity) {
 
 iList* new_ilist(int initial_capacity) {
 	iList* list = malloc(sizeof(iList));
+	if (list == NULL) {
+		printf("new_ilist: Failed to allocate memory for list.\n");
+		return NULL;
+	}
 	list->elements = malloc(initial_capacity * sizeof(int));
 	if (list->elements == NULL) {
-		printf("Failed to allocate memory for iList.\n");
+		printf("new_ilist: Failed to allocate memory for list->elements.\n");
 		list->size = 0;
 		list->capacity = 0;
 		return list;
@@ -34,9 +42,13 @@ iList* new_ilist(int initial_capacity) {
 
 dList* new_dlist(int initial_capacity) {
 	dList* list = malloc(sizeof(dList));
+	if (list == NULL) {
+		printf("new_dlist: Failed to allocate memory for list.\n");
+		return NULL;
+	}
 	list->elements = malloc(initial_capacity * sizeof(double));
 	if (list->elements == NULL) {
-		printf("Failed to allocate memory for dList.\n");
+		printf("new_dlist: Failed to allocate memory for list->elements.\n");
 		list->size = 0;
 		list->capacity = 0;
 		return list;
@@ -48,9 +60,13 @@ dList* new_dlist(int initial_capacity) {
 
 sList* new_slist(int initial_capacity) {
 	sList* list = malloc(sizeof(sList));
+	if (list == NULL) {
+		printf("new_slist: Failed to allocate memory for list.\n");
+		return NULL;
+	}
 	list->elements = malloc(initial_capacity * sizeof(char*));
 	if (list->elements == NULL) {
-		printf("Failed to allocate memory for slist.\n");
+		printf("new_slist: Failed to allocate memory for list->elements.\n");
 		list->size = 0;
 		list->capacity = 0;
 		return list;
@@ -63,62 +79,52 @@ sList* new_slist(int initial_capacity) {
 
 void list_add(List* list, void* element) {
 	if (list->size >= list->capacity) {
-		int new_capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
-		void** new_elements = realloc(list->elements, new_capacity * sizeof(void*));
-		if (new_elements == NULL) {
-			// Error handling - failed to allocate memory
-			printf("Failed to allocate memory for list.\n");
+		list->capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
+		list->elements = realloc(list->elements, list->capacity * sizeof(void*));
+		if (list->elements == NULL) {
+			printf("list_add: Failed to reallocate memory for list->elements.\n");
 			return;
 		}
-		for (int i = list->capacity; i < new_capacity; i++) {
-			new_elements[i] = NULL;
-		}
-		list->elements = new_elements;
-		list->capacity = new_capacity;
 	}
 	list->elements[list->size++] = element;
 }
 
 void ilist_add(iList* list, int element) {
 	if (list->size >= list->capacity) {
-		int new_capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
-		int* new_elements = realloc(list->elements, new_capacity * sizeof(int));
-		if (new_elements == NULL) {
-			printf("Failed to allocate memory for iList.\n");
+		list->capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
+		list->elements = realloc(list->elements, list->capacity * sizeof(int));
+		if (list->elements == NULL) {
+			printf("ilist_add: Failed to reallocate memory for list->elements.\n");
 			return;
 		}
-		list->elements = new_elements;
-		list->capacity = new_capacity;
 	}
 	list->elements[list->size++] = element;
 }
 void dlist_add(dList* list, double element) {
 	if (list->size >= list->capacity) {
-		int new_capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
-		double* new_elements = realloc(list->elements, new_capacity * sizeof(double));
-		if (new_elements == NULL) {
-			printf("Failed to allocate memory for dList.\n");
+		list->capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
+		list->elements = realloc(list->elements, list->capacity * sizeof(double));
+		if (list->elements == NULL) {
+			printf("dlist_add: Failed to reallocate memory for list->elements.\n");
 			return;
 		}
-		list->elements = new_elements;
-		list->capacity = new_capacity;
 	}
 	list->elements[list->size++] = element;
 }
 
 void slist_add(sList* list, char* element) {
 	if (list->size >= list->capacity) {
-		int new_capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
-		char** new_elements = realloc(list->elements, new_capacity * sizeof(char*));
-		if (new_elements == NULL) {
-			printf("Failed to allocate memory for slist.\n");
+		list->capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
+		list->elements = realloc(list->elements, list->capacity * sizeof(char*));
+		if (list->elements == NULL) {
+			printf("slist_add: Failed to reallocate memory for list->elements.\n");
 			return;
 		}
-		list->elements = new_elements;
-		list->capacity = new_capacity;
 	}
-	list->elements[list->size] = malloc((strlen(element) + 1) * sizeof(char));
-	strcpy(list->elements[list->size], element);
+	int n = strlen(element);
+	list->elements[list->size] = malloc((n + 1) * sizeof(char));
+	memcpy(list->elements[list->size], element, n*sizeof(char));
+	list->elements[list->size][n] = '\0';
 	list->size++;
 }
 
@@ -126,7 +132,7 @@ void slist_add(sList* list, char* element) {
 void* list_pop(List* list, int index) {
 	if (index < 0 || index >= list->size) {
 		// Error handling - index out of bounds
-		printf("Index out of bounds.\n");
+		printf("list_pop: Index out of bounds (%i).\n", index);
 		return NULL;
 	}
 	void* element = list->elements[index];
@@ -139,7 +145,7 @@ void* list_pop(List* list, int index) {
 
 int ilist_pop(iList* list, int index) {
 	if (index < 0 || index >= list->size) {
-		printf("Index out of bounds.\n");
+		printf("ilist_pop: Index out of bounds (%i).\n", index);
 		return -1;
 	}
 	int element = list->elements[index];
@@ -152,7 +158,7 @@ int ilist_pop(iList* list, int index) {
 
 double dlist_pop(dList* list, int index) {
 	if (index < 0 || index >= list->size) {
-		printf("Index out of bounds.\n");
+		printf("dlist_pop: Index out of bounds (%i).\n", index);
 		return -1;
 	}
 	double element = list->elements[index];
@@ -165,7 +171,7 @@ double dlist_pop(dList* list, int index) {
 
 char* slist_pop(sList* list, int index) {
 	if (index < 0 || index >= list->size) {
-		printf("Index out of bounds.\n");
+		printf("slist_pop: Index out of bounds (%i).\n", index);
 		return NULL;
 	}
 	char* element = list->elements[index];
@@ -242,7 +248,7 @@ void free_dlist(dList* list) {
 void free_slist(sList* list){
 	for (int i = 0; i < list->size; i++) free(list->elements[i]);
 	free(list->elements);
-	free_slist(list);
+	free(list);
 }
 
 

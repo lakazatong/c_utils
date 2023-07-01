@@ -1,4 +1,4 @@
 *.o
 test
-test.exe
+test.exe*
 Makefile
