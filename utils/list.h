@@ -30,27 +30,38 @@ typedef struct {
 } sList;
 
 List* new_list(int initial_capacity);
-void list_add(List* list, void* element);
-void* list_pop(List* list, int index);
-void clear_list(List* list);
-void free_list(List* list);
-
 iList* new_ilist(int initial_capacity);
-void ilist_add(iList* list, int element);
-int ilist_pop(iList* list, int index);
-void clear_ilist(iList* list);
-void free_ilist(iList* list);
-
 dList* new_dlist(int initial_capacity);
-void dlist_add(dList* list, int element);
-int dlist_pop(dList* list, int index);
-void clear_dlist(dList* list);
-void free_dlist(dList* list);
-
 sList* new_slist(int initial_capacity);
+
+void list_add(List* list, void* element);
+void ilist_add(iList* list, int element);
+void dlist_add(dList* list, double element);
 void slist_add(sList* list, char* element);
+
+void* list_pop(List* list, int index);
+int ilist_pop(iList* list, int index);
+double dlist_pop(dList* list, int index);
 char* slist_pop(sList* list, int index);
+
+void set_list(List* list, void* value);
+void set_ilist(iList* list, int value);
+void set_dlist(dList* list, double value);
+void set_slist(sList* list, char* value);
+
+void clear_list(List* list);
+void clear_ilist(iList* list);
+void clear_dlist(dList* list);
 void clear_slist(sList* list);
+
+void free_list(List* list);
+void free_ilist(iList* list);
+void free_dlist(dList* list);
 void free_slist(sList* list);
+
+void print_list(List* list);
+void print_ilist(iList* list);
+void print_dlist(dList* list);
+void print_slist(sList* list);
 
 #endif
