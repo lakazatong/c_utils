@@ -29,8 +29,6 @@ typedef struct {
 	int capacity;
 } sList;
 
-void clear_object(void** elements, int size);
-
 List* new_list(int initial_capacity);
 void list_add(List* list, void* element);
 void* list_pop(List* list, int index);

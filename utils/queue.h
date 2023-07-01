@@ -29,8 +29,6 @@ typedef struct {
 	int capacity;
 } sQueue;
 
-void clear_object(void** elements, int size);
-
 Queue* new_queue(int initial_capacity);
 void queue_push(Queue* queue, void* element);
 void* queue_pop(Queue* queue);
