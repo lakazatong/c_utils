@@ -1,5 +1,6 @@
 #ifndef LIST_UTILS_H
 #define LIST_UTILS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,25 +29,30 @@ typedef struct {
 	int capacity;
 } sList;
 
+void clear_object(void** elements, int size);
+
 List* new_list(int initial_capacity);
 void list_add(List* list, void* element);
 void* list_pop(List* list, int index);
+void clear_list(List* list);
 void free_list(List* list);
 
 iList* new_ilist(int initial_capacity);
 void ilist_add(iList* list, int element);
 int ilist_pop(iList* list, int index);
+void clear_ilist(iList* list);
 void free_ilist(iList* list);
 
 dList* new_dlist(int initial_capacity);
 void dlist_add(dList* list, int element);
 int dlist_pop(dList* list, int index);
+void clear_dlist(dList* list);
 void free_dlist(dList* list);
 
 sList* new_slist(int initial_capacity);
 void slist_add(sList* list, char* element);
 char* slist_pop(sList* list, int index);
+void clear_slist(sList* list);
 void free_slist(sList* list);
-void destroy_slist(sList* list);
 
 #endif

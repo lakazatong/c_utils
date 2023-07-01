@@ -1,5 +1,12 @@
 #include "list.h"
 
+void clear_object(void** elements, int size) {
+	for (int i = 0; i < size; i++) {
+		free(elements[i]);
+		elements[i] = NULL;
+	}
+}
+
 List* new_list(int initial_capacity) {
 	List* list = malloc(sizeof(List));
 	list->elements = malloc(initial_capacity * sizeof(void*));
@@ -50,6 +57,11 @@ void* list_pop(List* list, int index) {
 	return element;
 }
 
+void clear_list(List* list) {
+	clear_object(list->elements, list->size);
+	list->size = 0;
+}
+
 void free_list(List* list){
 	free(list->elements);
 	free(list);
@@ -96,6 +108,11 @@ int ilist_pop(iList* list, int index) {
 	return element;
 }
 
+void clear_ilist(iList* list) {
+	clear_object((void**)list->elements, list->size);
+	list->size = 0;
+}
+
 void free_ilist(iList* list) {
 	free(list->elements);
 	free(list);
@@ -140,6 +157,11 @@ double dList_pop(dList* list, int index) {
 	}
 	list->size--;
 	return element;
+}
+
+void clear_dlist(dList* list) {
+	clear_object((void**)list->elements, list->size);
+	list->size = 0;
 }
 
 void free_dList(dList* list) {
@@ -190,12 +212,13 @@ char* slist_pop(sList* list, int index) {
 	return element;
 }
 
-void free_slist(sList* list) {
-	free(list->elements);
-	free(list);
+void clear_slist(sList* list) {
+	clear_object((void**)list->elements, list->size);
+	list->size = 0;
 }
 
-void destroy_slist(sList* list){
+void free_slist(sList* list){
 	for (int i = 0; i < list->size; i++) free(list->elements[i]);
+	free(list->elements);
 	free_slist(list);
 }

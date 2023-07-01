@@ -1,5 +1,12 @@
 #include "queue.h"
 
+void clear_object(void** elements, int size) {
+	for (int i = 0; i < size; i++) {
+		free(elements[i]);
+		elements[i] = NULL;
+	}
+}
+
 Queue* new_queue(int initial_capacity) {
 	Queue* queue = (Queue*)malloc(sizeof(Queue));
 	queue->elements = (void**)malloc(initial_capacity * sizeof(void*));
@@ -33,6 +40,11 @@ void* queue_pop(Queue* queue) {
 	queue->size--;
 
 	return element;
+}
+
+void clear_queue(Queue* queue) {
+	clear_object(queue->elements, queue->size);
+	queue->size = 0;
 }
 
 void free_queue(Queue* queue) {
@@ -74,6 +86,11 @@ int iqueue_pop(iQueue* queue) {
 	return element;
 }
 
+void clear_iqueue(iQueue* queue) {
+	clear_object((void**)queue->elements, queue->size);
+	queue->size = 0;
+}
+
 void free_iqueue(iQueue* queue) {
 	free(queue->elements);
 	free(queue);
@@ -111,6 +128,11 @@ double dqueue_pop(dQueue* queue) {
 	queue->size--;
 
 	return element;
+}
+
+void clear_dqueue(dQueue* queue) {
+	clear_object((void**)queue->elements, queue->size);
+	queue->size = 0;
 }
 
 void free_dqueue(dQueue* queue) {
@@ -153,10 +175,13 @@ char* squeue_pop(sQueue* queue) {
 	return element;
 }
 
+void clear_squeue(sQueue* queue) {
+	clear_object((void**)queue->elements, queue->size);
+	queue->size = 0;
+}
+
 void free_squeue(sQueue* queue) {
-	for (int i = 0; i < queue->size; i++) {
-		free(queue->elements[i]);
-	}
+	for (int i = 0; i < queue->size; i++) free(queue->elements[i]);
 	free(queue->elements);
 	free(queue);
 }
