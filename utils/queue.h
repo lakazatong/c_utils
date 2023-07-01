@@ -33,19 +33,19 @@ void queue_push(Queue* queue, void* element);
 void* queue_pop(Queue* queue);
 void free_queue(Queue* queue);
 
-iQueue* new_iQueue(int initial_capacity);
-void iQueue_push(iQueue* queue, int element);
-int iQueue_pop(iQueue* queue);
-void free_iQueue(iQueue* queue);
+iQueue* new_iqueue(int initial_capacity);
+void iqueue_push(iQueue* queue, int element);
+int iqueue_pop(iQueue* queue);
+void free_iqueue(iQueue* queue);
 
-dQueue* new_dQueue(int initial_capacity);
-void dQueue_push(dQueue* queue, double element);
-double dQueue_pop(dQueue* queue);
-void free_dQueue(dQueue* queue);
+dQueue* new_dqueue(int initial_capacity);
+void dqueue_push(dQueue* queue, double element);
+double dqueue_pop(dQueue* queue);
+void free_dqueue(dQueue* queue);
 
-sQueue* new_sQueue(int initial_capacity);
-void sQueue_push(sQueue* queue, const char* element);
-char* sQueue_pop(sQueue* queue);
-void free_sQueue(sQueue* queue);
+sQueue* new_squeue(int initial_capacity);
+void squeue_push(sQueue* queue, char* element);
+char* squeue_pop(sQueue* queue);
+void free_squeue(sQueue* queue);
 
 #endif
