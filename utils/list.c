@@ -261,6 +261,15 @@ void print_list(List* list) {
 	printf("]\n");
 }
 
+void fprintf_dlist(FILE* fp, List* list) {
+	fprintf(fp, "[");
+	for (int i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%p, ", list->elements[i]);
+	if (list->size > 0)
+		fprintf(fp, "%p", list->elements[list->size - 1]);
+	fprintf(fp, "]");
+}
+
 void print_ilist(iList* list) {
 	printf("[");
 	for (int i = 0; i < list->size - 1; i++)
@@ -268,6 +277,15 @@ void print_ilist(iList* list) {
 	if (list->size > 0)
 		printf("%i", list->elements[list->size - 1]);
 	printf("]\n");
+}
+
+void fprintf_ilist(FILE* fp, iList* list) {
+	fprintf(fp, "[");
+	for (int i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%i, ", list->elements[i]);
+	if (list->size > 0)
+		fprintf(fp, "%i", list->elements[list->size - 1]);
+	fprintf(fp, "]");
 }
 
 void print_dlist(dList* list) {
@@ -279,6 +297,15 @@ void print_dlist(dList* list) {
 	printf("]\n");
 }
 
+void fprintf_dlist(FILE* fp, dList* list) {
+	fprintf(fp, "[");
+	for (int i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%f, ", list->elements[i]);
+	if (list->size > 0)
+		fprintf(fp, "%f", list->elements[list->size - 1]);
+	fprintf(fp, "]");
+}
+
 void print_slist(sList* list) {
 	printf("[");
 	for (int i = 0; i < list->size - 1; i++)
@@ -286,4 +313,13 @@ void print_slist(sList* list) {
 	if (list->size > 0)
 		printf("%s", list->elements[list->size - 1]);
 	printf("]\n");
+}
+
+void fprintf_slist(FILE* fp, sList* list) {
+	fprintf(fp, "[");
+	for (int i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%s, ", list->elements[i]);
+	if (list->size > 0)
+		fprintf(fp, "%s", list->elements[list->size - 1]);
+	fprintf(fp, "]");
 }

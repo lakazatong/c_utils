@@ -60,8 +60,12 @@ void free_dlist(dList* list);
 void free_slist(sList* list);
 
 void print_list(List* list);
+void fprintf_list(FILE* fp, List* list);
 void print_ilist(iList* list);
+void fprintf_ilist(FILE* fp, iList* list);
 void print_dlist(dList* list);
+void fprintf_dlist(FILE* fp, dList* list);
 void print_slist(sList* list);
+void fprintf_slist(FILE* fp, sList* list);
 
 #endif
