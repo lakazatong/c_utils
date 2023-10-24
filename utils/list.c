@@ -261,7 +261,7 @@ void print_list(List* list) {
 	printf("]\n");
 }
 
-void fprintf_dlist(FILE* fp, dList* list) {
+void fprintf_list(FILE* fp, dList* list) {
 	fprintf(fp, "[");
 	for (int i = 0; i < list->size - 1; i++)
 		fprintf(fp, "%p, ", list->elements[i]);
