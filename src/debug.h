@@ -257,6 +257,8 @@ dbgdec(void, DBGAMAT_str, size_t n, size_t m, const char* mat[n][m])
 
 // ---------- MISCELLANEOUS ----------
 
-#define report(fd, msg, ...) fprintf(fd, "%s: "msg"\n", __func__, ##__VA_ARGS__)
+#define freport(fd, msg, ...) fprintf(fd, "%s: "msg"\n", __func__, ##__VA_ARGS__)
+#define report(msg, ...) freport(stdout, msg, ##__VA_ARGS__)
+#define ereport(msg, ...) freport(stderr, msg, ##__VA_ARGS__)
 
 #endif /* DEBUG_UTILS_H */
