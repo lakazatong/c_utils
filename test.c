@@ -1,10 +1,6 @@
 #include <time.h>
 
-#include "src/all.h"
-
-#define MAIN_BODY_LINUX 
-
-#define MAIN_BODY_WIN 
+#include "all.h"
 
 #ifndef _WIN32
 
