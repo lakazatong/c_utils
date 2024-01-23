@@ -7,12 +7,12 @@
 // void* List
 
 List* new_list(size_t initial_capacity) {
-	List* list = malloc(sizeof(List));
+	List* list = calloc(1, sizeof(List));
 	if (list == NULL) {
 		ereport("failed to allocate memory for list");
 		return NULL;
 	}
-	list->elements = malloc(initial_capacity * sizeof(void*));
+	list->elements = calloc(initial_capacity, sizeof(void*));
 	if (list->elements == NULL) {
 		// Error handling - failed to allocate memory
 		ereport("failed to allocate memory for list->elements");
@@ -90,12 +90,12 @@ void fprintf_list(FILE* fp, List* list, char* (*f)(void*)) {
 // int List
 
 iList* new_ilist(size_t initial_capacity) {
-	iList* list = malloc(sizeof(iList));
+	iList* list = calloc(1, sizeof(iList));
 	if (list == NULL) {
 		ereport("failed to allocate memory for list");
 		return NULL;
 	}
-	list->elements = malloc(initial_capacity * sizeof(int));
+	list->elements = calloc(initial_capacity, sizeof(int));
 	if (list->elements == NULL) {
 		ereport("failed to allocate memory for list->elements");
 		list->size = 0;
@@ -168,12 +168,12 @@ void fprintf_ilist(FILE* fp, iList* list) {
 // double List
 
 dList* new_dlist(size_t initial_capacity) {
-	dList* list = malloc(sizeof(dList));
+	dList* list = calloc(1, sizeof(dList));
 	if (list == NULL) {
 		ereport("failed to allocate memory for list");
 		return NULL;
 	}
-	list->elements = malloc(initial_capacity * sizeof(double));
+	list->elements = calloc(initial_capacity, sizeof(double));
 	if (list->elements == NULL) {
 		ereport("failed to allocate memory for list->elements");
 		list->size = 0;
@@ -246,12 +246,12 @@ void fprintf_dlist(FILE* fp, dList* list) {
 // char* List
 
 sList* new_slist(size_t initial_capacity) {
-	sList* list = malloc(sizeof(sList));
+	sList* list = calloc(1, sizeof(sList));
 	if (list == NULL) {
 		ereport("failed to allocate memory for list");
 		return NULL;
 	}
-	list->elements = malloc(initial_capacity * sizeof(char*));
+	list->elements = calloc(initial_capacity, sizeof(char*));
 	if (list->elements == NULL) {
 		ereport("failed to allocate memory for list->elements");
 		list->size = 0;
@@ -273,7 +273,7 @@ void slist_add(sList* list, char* element) {
 		}
 	}
 	int n = strlen(element);
-	list->elements[list->size] = malloc((n + 1) * sizeof(char));
+	list->elements[list->size] = calloc(n + 1, sizeof(char));
 	memcpy(list->elements[list->size], element, n*sizeof(char));
 	list->elements[list->size][n] = '\0';
 	list->size++;
