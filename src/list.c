@@ -28,6 +28,11 @@ List* new_list(size_t initial_capacity) {
 	return list;
 }
 
+void free_list(List* list){
+	free(list->elements);
+	free(list);
+}
+
 void list_add(List* list, void* element) {
 	if (list->size >= list->capacity) {
 		list->capacity = (list->capacity == 0) ? 1 : 2 * list->capacity;
@@ -64,27 +69,37 @@ void clear_list(List* list) {
 	list->size = 0;
 }
 
-void free_list(List* list){
-	free(list->elements);
-	free(list);
+List* duplicate_list(List* list) {
+	List* dup = new_list(list->capacity);
+	memcpy(dup->elements, list->elements, list->size * sizeof(void*));
+	dup->size = list->size;
+	return dup;
 }
 
-void print_list(List* list, char* (*f)(void*)) {
-	printf("[");
-	for (size_t i = 0; i < list->size - 1; i++)
-		printf("%s, ", f(list->elements[i]));
-	if (list->size > 0)
-		printf("%s", f(list->elements[list->size - 1]));
-	printf("\n");
+int list_contains(List* list, void* element, int (*compare_function)(const void*, const void*)) {
+	for (size_t i = 0; i < list->size; i++)
+		if (compare_function(list->elements[i], element) != 0)
+			return 1;
+	return 0;
 }
 
-void fprintf_list(FILE* fp, List* list, char* (*f)(void*)) {
+void fprintf_list(FILE *fp, List *list, char* (*repr_function)(void*)) {
 	fprintf(fp, "[");
 	for (size_t i = 0; i < list->size - 1; i++)
-		fprintf(fp, "%s, ", f(list->elements[i]));
+		fprintf(fp, "%s, ", repr_function(list->elements[i]));
 	if (list->size > 0)
-		fprintf(fp, "%s", f(list->elements[list->size - 1]));
+		fprintf(fp, "%s", repr_function(list->elements[list->size - 1]));
 	fprintf(fp, "]");
+}
+
+void print_list(List *list, char* (*repr_function)(void*)) {
+	fprintf_list(stdout, list, repr_function);
+}
+
+void pprint_list(List *list, char* (*repr_function)(void*)) {
+	printf("list = ");
+	fprintf_list(stdout, list, repr_function);
+	printf("\n");
 }
 
 // int List
@@ -105,6 +120,11 @@ iList* new_ilist(size_t initial_capacity) {
 	list->size = 0;
 	list->capacity = initial_capacity;
 	return list;
+}
+
+void free_ilist(iList* list) {
+	free(list->elements);
+	free(list);
 }
 
 void ilist_add(iList* list, int element) {
@@ -142,27 +162,37 @@ void clear_ilist(iList* list) {
 	list->size = 0;
 }
 
-void free_ilist(iList* list) {
-	free(list->elements);
-	free(list);
+iList* duplicate_ilist(iList* list) {
+	iList* dup = new_ilist(list->capacity);
+	memcpy(dup->elements, list->elements, list->size * sizeof(void*));
+	dup->size = list->size;
+	return dup;
 }
 
-void print_ilist(iList* list) {
-	printf("[");
-	for (size_t i = 0; i < list->size - 1; i++)
-		printf("%i, ", list->elements[i]);
-	if (list->size > 0)
-		printf("%i", list->elements[list->size - 1]);
-	printf("\n");
+int ilist_contains(iList* list, int element) {
+	for (size_t i = 0; i < list->size; i++)
+		if (list->elements[i] == element)
+			return 1;
+	return 0;
 }
 
-void fprintf_ilist(FILE* fp, iList* list) {
+void fprintf_ilist(FILE *fp, iList *list) {
 	fprintf(fp, "[");
 	for (size_t i = 0; i < list->size - 1; i++)
 		fprintf(fp, "%i, ", list->elements[i]);
 	if (list->size > 0)
 		fprintf(fp, "%i", list->elements[list->size - 1]);
 	fprintf(fp, "]");
+}
+
+void print_ilist(iList *list) {
+	fprintf_ilist(stdout, list);
+}
+
+void pprint_ilist(iList *list) {
+	printf("ilist = ");
+	fprintf_ilist(stdout, list);
+	printf("\n");
 }
 
 // double List
@@ -183,6 +213,11 @@ dList* new_dlist(size_t initial_capacity) {
 	list->size = 0;
 	list->capacity = initial_capacity;
 	return list;
+}
+
+void free_dlist(dList* list) {
+	free(list->elements);
+	free(list);
 }
 
 void dlist_add(dList* list, double element) {
@@ -220,27 +255,37 @@ void clear_dlist(dList* list) {
 	list->size = 0;
 }
 
-void free_dlist(dList* list) {
-	free(list->elements);
-	free(list);
+dList* duplicate_dlist(dList* list) {
+	dList* dup = new_dlist(list->capacity);
+	memcpy(dup->elements, list->elements, list->size * sizeof(void*));
+	dup->size = list->size;
+	return dup;
 }
 
-void print_dlist(dList* list) {
-	printf("[");
-	for (size_t i = 0; i < list->size - 1; i++)
-		printf("%f, ", list->elements[i]);
-	if (list->size > 0)
-		printf("%f", list->elements[list->size - 1]);
-	printf("\n");
+int dlist_contains(dList* list, double element) {
+	for (size_t i = 0; i < list->size; i++)
+		if (list->elements[i] == element)
+			return 1;
+	return 0;
 }
 
-void fprintf_dlist(FILE* fp, dList* list) {
+void fprintf_dlist(FILE *fp, dList *list) {
 	fprintf(fp, "[");
 	for (size_t i = 0; i < list->size - 1; i++)
-		fprintf(fp, "%f, ", list->elements[i]);
+		fprintf(fp, "%i, ", list->elements[i]);
 	if (list->size > 0)
-		fprintf(fp, "%f", list->elements[list->size - 1]);
+		fprintf(fp, "%i", list->elements[list->size - 1]);
 	fprintf(fp, "]");
+}
+
+void print_dlist(dList *list) {
+	fprintf_dlist(stdout, list);
+}
+
+void pprint_dlist(dList *list) {
+	printf("dlist = ");
+	fprintf_dlist(stdout, list);
+	printf("\n");
 }
 
 // char* List
@@ -261,6 +306,12 @@ sList* new_slist(size_t initial_capacity) {
 	list->size = 0;
 	list->capacity = initial_capacity;
 	return list;
+}
+
+void free_slist(sList* list){
+	for (size_t i = 0; i < list->size; i++) free(list->elements[i]);
+	free(list->elements);
+	free(list);
 }
 
 void slist_add(sList* list, char* element) {
@@ -307,72 +358,51 @@ void clear_slist(sList* list) {
 	list->size = 0;
 }
 
-void free_slist(sList* list){
-	for (size_t i = 0; i < list->size; i++) free(list->elements[i]);
-	free(list->elements);
-	free(list);
+sList* duplicate_slist(sList* list) {
+	sList* dup = new_slist(list->capacity);
+	memcpy(dup->elements, list->elements, list->size * sizeof(void*));
+	dup->size = list->size;
+	return dup;
 }
 
-void print_slist(sList* list, int quotes) {
-	switch (quotes) {
-		case 0:
-			printf("[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				printf("%s, ", list->elements[i]);
-			if (list->size > 0)
-				printf("%s", list->elements[list->size - 1]);
-			printf("\n");
-			break;
-		case 1:
-			printf("[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				printf("'%s', ", list->elements[i]);
-			if (list->size > 0)
-				printf("'%s'", list->elements[list->size - 1]);
-			printf("\n");
-			break;
-		case 2:
-			printf("[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				printf("\"%s\", ", list->elements[i]);
-			if (list->size > 0)
-				printf("\"%s\"", list->elements[list->size - 1]);
-			printf("\n");
-			break;
-		default:
-			ereport("quotes can only be 0, 1 or 2");
-			break;
-	}
+int slist_contains(sList* list, char* element) {
+	for (size_t i = 0; i < list->size; i++)
+		if (strcmp(list->elements[i], element) == 0)
+			return 1;
+	return 0;
 }
 
-void fprintf_slist(FILE* fp, sList* list, int quotes) {
-	switch (quotes) {
-		case 0:
-			fprintf(fp, "[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				fprintf(fp, "%s, ", list->elements[i]);
-			if (list->size > 0)
-				fprintf(fp, "%s", list->elements[list->size - 1]);
-			fprintf(fp, "]");
-			break;
-		case 1:
-			fprintf(fp, "[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				fprintf(fp, "'%s', ", list->elements[i]);
-			if (list->size > 0)
-				fprintf(fp, "'%s'", list->elements[list->size - 1]);
-			fprintf(fp, "]");
-			break;
-		case 2:
-			fprintf(fp, "[");
-			for (size_t i = 0; i < list->size - 1; i++)
-				fprintf(fp, "\"%s\", ", list->elements[i]);
-			if (list->size > 0)
-				fprintf(fp, "\"%s\"", list->elements[list->size - 1]);
-			fprintf(fp, "]");
-			break;
-		default:
-			ereport("quotes can only be 0, 1 or 2");
-			break;
+void fprintf_slist_quotes(sList *list, FILE *fp, char quote) {
+	fprintf(fp, "[");
+	if (list->size > 0) {
+		for (size_t i = 0; i < list->size - 1; i++) {
+			if (list->elements[i])
+				fprintf(fp, "%c%s%c, ", quote, list->elements[i], quote);
+			else
+				fprintf(fp, "NULL, ");
+		}
+		if (list->elements[list->size - 1])
+			fprintf(fp, "%c%s%c", quote, list->elements[list->size - 1], quote);
+		else
+			fprintf(fp, "NULL");
 	}
+	fprintf(fp, "]");
+}
+
+void fprintf_slist(sList *list, FILE *fp, int quote) {
+	if (quote == 0) {
+		fprintf_slist_quotes(list, fp, '\0');
+		return;
+	}
+	fprintf_slist_quotes(list, fp, (quote % 2 == 0) ? '"' * (quote / 2) : '\'' * quote);
+}
+
+void print_slist(sList *list, int quote) {
+	fprintf_slist(list, stdout, quote);
+}
+
+void pprint_slist(sList *list, int quote) {
+	printf("slist = ");
+	fprintf_slist(list, stdout, quote);
+	printf("\n");
 }
