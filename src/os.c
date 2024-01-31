@@ -9,12 +9,14 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "debug.h"
+
 DirectoryCounts directory_count(const char *dirname) {
 	DirectoryCounts r = { .nb_files = 0, .nb_directories = 0 };
 	struct dirent *entry;
 	DIR *directory = opendir(dirname);
 	if (!directory) {
-		fprintf(stderr, "directory_count: opendir failed to open the %s directory\n", dirname);
+		ereport("opendir failed to open the %s directory", dirname);
 		return r;
 	}
 	while ((entry = readdir(directory))) {
@@ -33,18 +35,18 @@ FILES* open_files(const char* dirname) {
 	// check nb files to open
 	struct rlimit rlim;
 	if (getrlimit(RLIMIT_NOFILE, &rlim)) {
-		fprintf(stderr, "open_files: getrlimit failed\n");
+		ereport("getrlimit failed");
 		return NULL;
 	}
 	DirectoryCounts counts = directory_count(dirname);
 	if (counts.nb_files > rlim.rlim_cur) {
-		fprintf(stderr, "open_files: %zu files to open in %s (limit is %zu)\n", counts.nb_files, dirname, rlim.rlim_cur);
+		ereport("%zu files to open in %s (limit is %zu)", counts.nb_files, dirname, rlim.rlim_cur);
 		return NULL;
 	}
 	// init FILES struct
 	FILES* r = calloc(1, sizeof(FILES));
 	if (!r) {
-		fprintf(stderr, "open_files: calloc failed\n");
+		ereport("calloc failed");
 		return NULL;
 	}
 	r->dirname = dirname;
@@ -52,7 +54,7 @@ FILES* open_files(const char* dirname) {
 	r->files = calloc(1, capacity * sizeof(FILE*));
 	r->filenames = calloc(1, capacity * sizeof(char*));
 	if (!r->files || !r->filenames) {
-		fprintf(stderr, "open_files: calloc failed\n");
+		ereport("calloc failed");
 		free(r);
 		return NULL;
 	}
@@ -60,7 +62,7 @@ FILES* open_files(const char* dirname) {
 	// open directory
 	DIR* directory = opendir(dirname);
 	if (!directory) {
-		fprintf(stderr, "open_files: opendir failed to open the %s directory\n", dirname);
+		ereport("opendir failed to open the %s directory", dirname);
 		free(r->files);
 		free(r->filenames);
 		free(r);
@@ -75,7 +77,7 @@ FILES* open_files(const char* dirname) {
 		errno = 0;
 		if (!(entry = readdir(directory))) {
 			if (errno) {
-				fprintf(stderr, "open_files: readdir failed\n");
+				ereport("readdir failed");
 				for (size_t i = 0; i < r->nb_files; i++) {
 					fclose(r->files[i]);
 					free(r->filenames[i]);
@@ -97,7 +99,7 @@ FILES* open_files(const char* dirname) {
 			tmp1 = realloc(r->files, capacity * sizeof(FILE*));
 			tmp2 = realloc(r->filenames, capacity * sizeof(char*));
 			if (!tmp1 || !tmp2) {
-				fprintf(stderr, "open_files: realloc failed\n");
+				ereport("realloc failed");
 				for (size_t i = 0; i < r->nb_files; i++) {
 					fclose(r->files[i]);
 					free(r->filenames[i]);
@@ -114,7 +116,7 @@ FILES* open_files(const char* dirname) {
 		sprintf(path, "%s/%s", dirname, entry->d_name);
 		r->files[r->nb_files] = fopen(path, "rb");
 		if (!r->files[r->nb_files]) {
-			fprintf(stderr, "open_files: fopen failed to open %s (%s)\n", path, strerror(errno));
+			ereport("fopen failed to open %s (%s)", path, strerror(errno));
 			for (size_t i = 0; i < r->nb_files; i++) {
 				fclose(r->files[i]);
 				free(r->filenames[i]);
@@ -127,7 +129,7 @@ FILES* open_files(const char* dirname) {
 		}
 		r->filenames[r->nb_files] = strdup(entry->d_name);
 		if (!r->filenames[r->nb_files]) {
-			fprintf(stderr, "open_files: strdup failed\n");
+			ereport("strdup failed");
 			for (size_t i = 0; i < r->nb_files; i++) {
 				fclose(r->files[i]);
 				free(r->filenames[i]);
@@ -164,24 +166,24 @@ FFILE* mmap_file(const char* path) {
 	// Open the file
 	int fd = open(path, O_RDONLY);
 	if (fd == -1) {
-		fprintf(stderr, "mmap_file: open failed\n");
+		ereport("open failed");
 		return NULL;
 	}
 	struct stat fstats;
 	if (fstat(fd, &fstats) == -1) {
-		fprintf(stderr, "mmap_file: fstat failed\n");
+		ereport("fstat failed");
 		close(fd);
 		return NULL;
 	}
 	char* content = mmap(NULL, fstats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	close(fd);
 	if (content == MAP_FAILED) {
-		fprintf(stderr, "mmap_file: mmap failed\n");
+		ereport("mmap failed");
 		return NULL;
 	}
 	FFILE* r = calloc(1, sizeof(FFILE));
 	if (!r) {
-		fprintf(stderr, "mmap_file: calloc failed\n");
+		ereport("calloc failed");
 		return NULL;
 	}
 	r->content = content;
@@ -190,6 +192,9 @@ FFILE* mmap_file(const char* path) {
 }
 
 void munmap_file(FFILE* file) {
-	if (munmap(file->content, file->size) == -1) fprintf(stderr, "munmap_file: munmap failed\n");
+	if (file == NULL) return;
+	if (file->content != NULL)
+		if (munmap(file->content, file->size) == -1)
+			ereport("munmap failed");
 	free(file);
 }
