@@ -272,9 +272,9 @@ int dlist_contains(dList* list, double element) {
 void fprintf_dlist(FILE *fp, dList *list) {
 	fprintf(fp, "[");
 	for (size_t i = 0; i < list->size - 1; i++)
-		fprintf(fp, "%i, ", list->elements[i]);
+		fprintf(fp, "%f, ", list->elements[i]);
 	if (list->size > 0)
-		fprintf(fp, "%i", list->elements[list->size - 1]);
+		fprintf(fp, "%f", list->elements[list->size - 1]);
 	fprintf(fp, "]");
 }
 
