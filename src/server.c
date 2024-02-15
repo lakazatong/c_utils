@@ -70,7 +70,7 @@ Server* new_server(char* name, char* port, void* (*callback)(void*), void* (*sig
 		return NULL;
 	}
 
-	report("Server is now listening on localhost:%s", port);
+	report("Server is now listening on localhost: %s", port);
 
 	// Create a Server
 	Server* r = malloc(sizeof(Server));
@@ -91,7 +91,7 @@ Server* new_server(char* name, char* port, void* (*callback)(void*), void* (*sig
 	servers[nb_servers++] = r;
 	servers = realloc(servers, (nb_servers + 1) * sizeof(Server));
 	if (!servers) {
-		ereport("realloc failed: %s", strerror(errno));
+		ereport("realloc failed: %s", strerror(errno));	
 		close(server_socket);
 		free_server(r);
 		return NULL;

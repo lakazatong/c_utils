@@ -47,7 +47,6 @@ void list_add(List* list, void* element) {
 
 void* list_pop(List* list, size_t index) {
 	if (index >= list->size) {
-		// Error handling - index out of bounds
 		ereport("index out of bounds (%zu)", index);
 		return NULL;
 	}
@@ -83,22 +82,25 @@ int list_contains(List* list, void* element, int (*compare_function)(const void*
 	return 0;
 }
 
-void fprintf_list(FILE *fp, List *list, char* (*repr_function)(void*)) {
+void fprintf_list(List *list, FILE *fp, char* (*repr_function)(void*)) {
 	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
 	for (size_t i = 0; i < list->size - 1; i++)
 		fprintf(fp, "%s, ", repr_function(list->elements[i]));
-	if (list->size > 0)
-		fprintf(fp, "%s", repr_function(list->elements[list->size - 1]));
+	fprintf(fp, "%s", repr_function(list->elements[list->size - 1]));
 	fprintf(fp, "]");
 }
 
 void print_list(List *list, char* (*repr_function)(void*)) {
-	fprintf_list(stdout, list, repr_function);
+	fprintf_list(list, stdout, repr_function);
 }
 
 void pprint_list(List *list, char* (*repr_function)(void*)) {
 	printf("list = ");
-	fprintf_list(stdout, list, repr_function);
+	fprintf_list(list, stdout, repr_function);
 	printf("\n");
 }
 
@@ -141,7 +143,7 @@ void ilist_add(iList* list, int element) {
 
 int ilist_pop(iList* list, size_t index) {
 	if (index >= list->size) {
-		ereport("index out of bounds (%zu).\n", index);
+		ereport("index out of bounds (%zu)", index);
 		return -1;
 	}
 	int element = list->elements[index];
@@ -176,22 +178,25 @@ int ilist_contains(iList* list, int element) {
 	return 0;
 }
 
-void fprintf_ilist(FILE *fp, iList *list) {
+void fprintf_ilist(iList *list, FILE *fp) {
 	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
 	for (size_t i = 0; i < list->size - 1; i++)
 		fprintf(fp, "%i, ", list->elements[i]);
-	if (list->size > 0)
-		fprintf(fp, "%i", list->elements[list->size - 1]);
+	fprintf(fp, "%i", list->elements[list->size - 1]);
 	fprintf(fp, "]");
 }
 
 void print_ilist(iList *list) {
-	fprintf_ilist(stdout, list);
+	fprintf_ilist(list, stdout);
 }
 
 void pprint_ilist(iList *list) {
 	printf("ilist = ");
-	fprintf_ilist(stdout, list);
+	fprintf_ilist(list, stdout);
 	printf("\n");
 }
 
@@ -234,7 +239,7 @@ void dlist_add(dList* list, double element) {
 
 double dlist_pop(dList* list, size_t index) {
 	if (index >= list->size) {
-		ereport("index out of bounds (%zu).\n", index);
+		ereport("index out of bounds (%zu)", index);
 		return -1;
 	}
 	double element = list->elements[index];
@@ -269,22 +274,25 @@ int dlist_contains(dList* list, double element) {
 	return 0;
 }
 
-void fprintf_dlist(FILE *fp, dList *list) {
+void fprintf_dlist(dList *list, FILE *fp) {
 	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
 	for (size_t i = 0; i < list->size - 1; i++)
 		fprintf(fp, "%f, ", list->elements[i]);
-	if (list->size > 0)
-		fprintf(fp, "%f", list->elements[list->size - 1]);
+	fprintf(fp, "%f", list->elements[list->size - 1]);
 	fprintf(fp, "]");
 }
 
 void print_dlist(dList *list) {
-	fprintf_dlist(stdout, list);
+	fprintf_dlist(list, stdout);
 }
 
 void pprint_dlist(dList *list) {
 	printf("dlist = ");
-	fprintf_dlist(stdout, list);
+	fprintf_dlist(list, stdout);
 	printf("\n");
 }
 
@@ -332,7 +340,7 @@ void slist_add(sList* list, char* element) {
 
 char* slist_pop(sList* list, size_t index) {
 	if (index >= list->size) {
-		ereport("index out of bounds (%zu).\n", index);
+		ereport("index out of bounds (%zu)", index);
 		return NULL;
 	}
 	char* element = list->elements[index];
@@ -374,18 +382,20 @@ int slist_contains(sList* list, char* element) {
 
 void fprintf_slist_quotes(sList *list, FILE *fp, char quote) {
 	fprintf(fp, "[");
-	if (list->size > 0) {
-		for (size_t i = 0; i < list->size - 1; i++) {
-			if (list->elements[i])
-				fprintf(fp, "%c%s%c, ", quote, list->elements[i], quote);
-			else
-				fprintf(fp, "NULL, ");
-		}
-		if (list->elements[list->size - 1])
-			fprintf(fp, "%c%s%c", quote, list->elements[list->size - 1], quote);
-		else
-			fprintf(fp, "NULL");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
 	}
+	for (size_t i = 0; i < list->size - 1; i++) {
+		if (list->elements[i])
+			fprintf(fp, "%c%s%c, ", quote, list->elements[i], quote);
+		else
+			fprintf(fp, "NULL, ");
+	}
+	if (list->elements[list->size - 1])
+		fprintf(fp, "%c%s%c", quote, list->elements[list->size - 1], quote);
+	else
+		fprintf(fp, "NULL");
 	fprintf(fp, "]");
 }
 
