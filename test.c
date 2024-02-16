@@ -67,22 +67,21 @@
 
 */
 
-void test_parse_args(void)
-{
+void test_parse_args(void) {
     // Init
 
-    char *argv[] = { "script", "-fi",        "--path",   "src",      "foo",
+    char* argv[] = { "script", "-fi",        "--path",   "src",      "foo",
                      "bar",    "--path",     "dist",     "--output", "baz",
                      "-d",     "GNU_SOURCE", "--define", "DEBUG",    NULL };
 
-    char *force_shorts[] = { "f", NULL };
-    char *force_longs[] = { "force", NULL };
-    char *verbose_shorts[] = { "v", NULL };
-    char *verbose_longs[] = { "verbose", NULL };
-    char *install_shorts[] = { "i", NULL };
-    char *install_longs[] = { "install", NULL };
-    char *output_longs[] = { "output", "path", NULL };
-    char *define_longs[] = { "define", NULL };
+    char* force_shorts[] = { "f", NULL };
+    char* force_longs[] = { "force", NULL };
+    char* verbose_shorts[] = { "v", NULL };
+    char* verbose_longs[] = { "verbose", NULL };
+    char* install_shorts[] = { "i", NULL };
+    char* install_longs[] = { "install", NULL };
+    char* output_longs[] = { "output", "path", NULL };
+    char* define_longs[] = { "define", NULL };
 
     struct Option options[] = { { 0, force_shorts, force_longs },
                                 { 0, verbose_shorts, verbose_longs },
@@ -91,8 +90,8 @@ void test_parse_args(void)
                                 { 1, NULL, define_longs },
                                 { 0, NULL, NULL } };
 
-    char *default_result_arguments[] = { "main.c", NULL };
-    char *default_result_options_values[] = { "0", NULL, "1", NULL, NULL };
+    char* default_result_arguments[] = { "main.c", NULL };
+    char* default_result_options_values[] = { "0", NULL, "1", NULL, NULL };
 
     struct Results default_result = { .arguments = default_result_arguments,
                                       .options_values =
@@ -105,7 +104,7 @@ void test_parse_args(void)
 
     // Parse
 
-    struct Results *results =
+    struct Results* results =
         parse_command_line_arguments(argv, options, &parse_options);
 
     // Print
@@ -125,9 +124,8 @@ void test_parse_args(void)
     free_results(results);
 }
 
-void test_slist(void)
-{
-    sList *l = new_slist(1);
+void test_slist(void) {
+    sList* l = new_slist(1);
     slist_add(l, NULL);
     pprint_slist(l, 2);
     free_slist(l);
@@ -135,25 +133,26 @@ void test_slist(void)
 
 #ifndef _WIN32
 
-int main(int argc, char* argv[]){
-	clock_t begin = clock();
-	test_parse_args();
-	clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time of execution: %lf\n", time_spent);
-	return 0;
+int main(int argc, char* argv[]) {
+    clock_t begin = clock();
+    test_parse_args();
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("time of execution: %lf\n", time_spent);
+    return 0;
 }
 
 #else
 
-#include <windows.h>
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
-	clock_t begin = clock();
-	// ...
-	clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time of execution: %lf\n", time_spent);
-	return 0;
+#    include <windows.h>
+int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
+            int nCmdShow) {
+    clock_t begin = clock();
+    // ...
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("time of execution: %lf\n", time_spent);
+    return 0;
 }
 
 #endif

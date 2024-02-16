@@ -60,7 +60,8 @@ struct ParseOptions {
  * @return     A pointer to the Results structure containing parsed arguments
  * and options values.
  */
-struct Results* parse_command_line_arguments(char** argv, struct Option* options,
+struct Results*
+parse_command_line_arguments(char** argv, struct Option* options,
                              struct ParseOptions* parse_options);
 
 /**

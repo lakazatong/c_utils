@@ -1,13 +1,13 @@
 #ifndef MATH_UTILS_H
 #define MATH_UTILS_H
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 
 typedef struct {
-	size_t start;
-	size_t end;
+    size_t start;
+    size_t end;
 } Range;
 
 // return b if a == b
