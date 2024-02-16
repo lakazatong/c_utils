@@ -6,9 +6,9 @@
 // void* List
 
 typedef struct {
-    void** elements;
-    size_t size;
-    size_t capacity;
+	void** elements;
+	size_t size;
+	size_t capacity;
 } List;
 
 List* new_list(size_t initial_capacity);
@@ -19,7 +19,7 @@ void* list_pop(List* list, size_t index);
 void clear_list(List* list);
 List* duplicate_list(List* list);
 int list_contains(List* list, void* element,
-                  int (*compare_function)(const void*, const void*));
+				  int (*compare_function)(const void*, const void*));
 void fprintf_list(List* list, FILE* fp, char* (*repr_function)(void*));
 void print_list(List* list, char* (*repr_function)(void*));
 void pprint_list(List* list, char* (*repr_function)(void*));
@@ -27,9 +27,9 @@ void pprint_list(List* list, char* (*repr_function)(void*));
 // int List
 
 typedef struct {
-    int* elements;
-    size_t size;
-    size_t capacity;
+	int* elements;
+	size_t size;
+	size_t capacity;
 } iList;
 
 iList* new_ilist(size_t initial_capacity);
@@ -47,9 +47,9 @@ void pprint_ilist(iList* list);
 // double List
 
 typedef struct {
-    double* elements;
-    size_t size;
-    size_t capacity;
+	double* elements;
+	size_t size;
+	size_t capacity;
 } dList;
 
 dList* new_dlist(size_t initial_capacity);
@@ -67,9 +67,9 @@ void pprint_dlist(dList* list);
 // char* List
 
 typedef struct {
-    char** elements;
-    size_t size;
-    size_t capacity;
+	char** elements;
+	size_t size;
+	size_t capacity;
 } sList;
 
 sList* new_slist(size_t initial_capacity);

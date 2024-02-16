@@ -8,12 +8,12 @@
  * @brief Structure representing an option for command-line argument parsing.
  */
 struct Option {
-    /** Whether the option takes an argument. */
-    int takes_arg;
-    /** Array of short option names (starting with '-' in argv). */
-    char** shorts;
-    /** Array of long option names (starting with '--' in argv). */
-    char** longs;
+	/** Whether the option takes an argument. */
+	int takes_arg;
+	/** Array of short option names (starting with '-' in argv). */
+	char** shorts;
+	/** Array of long option names (starting with '--' in argv). */
+	char** longs;
 };
 
 /**
@@ -21,18 +21,18 @@ struct Option {
  * parsing.
  */
 struct Results {
-    /** array of parsed arguments */
-    char** arguments;
-    /** size of arguments */
-    size_t nb_args;
-    /** array of parsed option values, same size as the options array
-     * NULL value means no default value, "" the empty string
-     * "1" and "0" represent true and false
-     * for options that do not take an argument
-     */
-    char** options_values;
-    /**< number of options encountered */
-    size_t options_found;
+	/** array of parsed arguments */
+	char** arguments;
+	/** size of arguments */
+	size_t nb_args;
+	/** array of parsed option values, same size as the options array
+	 * NULL value means no default value, "" the empty string
+	 * "1" and "0" represent true and false
+	 * for options that do not take an argument
+	 */
+	char** options_values;
+	/**< number of options encountered */
+	size_t options_found;
 };
 
 /**
@@ -40,14 +40,14 @@ struct Results {
  * command-line arguments.
  */
 struct ParseOptions {
-    /** Whether to ignore the first element in argv. */
-    int ignore_first;
-    /** Default results to include. */
-    struct Results* default_result;
-    /** Whether to include a default help option. */
-    int default_help;
-    /** Whether to set the help option if no argument and no option provided. */
-    int default_help_value;
+	/** Whether to ignore the first element in argv. */
+	int ignore_first;
+	/** Default results to include. */
+	struct Results* default_result;
+	/** Whether to include a default help option. */
+	int default_help;
+	/** Whether to set the help option if no argument and no option provided. */
+	int default_help_value;
 };
 
 /**
@@ -62,7 +62,7 @@ struct ParseOptions {
  */
 struct Results*
 parse_command_line_arguments(char** argv, struct Option* options,
-                             struct ParseOptions* parse_options);
+							 struct ParseOptions* parse_options);
 
 /**
  * @brief      Frees memory allocated for the Results structure.
