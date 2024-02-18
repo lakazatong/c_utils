@@ -23,6 +23,10 @@ int list_contains(List* list, void* element,
 void fprintf_list(List* list, FILE* fp, char* (*repr_function)(void*));
 void print_list(List* list, char* (*repr_function)(void*));
 void pprint_list(List* list, char* (*repr_function)(void*));
+void fprintf_list_no_spaces(List* list, FILE* fp,
+							char* (*repr_function)(void*));
+void print_list_no_spaces(List* list, char* (*repr_function)(void*));
+void pprint_list_no_spaces(List* list, char* (*repr_function)(void*));
 
 // int List
 
@@ -43,6 +47,9 @@ int ilist_contains(iList* list, int element);
 void fprintf_ilist(iList* list, FILE* fp);
 void print_ilist(iList* list);
 void pprint_ilist(iList* list);
+void fprintf_ilist_no_spaces(iList* list, FILE* fp);
+void print_ilist_no_spaces(iList* list);
+void pprint_ilist_no_spaces(iList* list);
 
 // double List
 
@@ -63,6 +70,9 @@ int dlist_contains(dList* list, double element);
 void fprintf_dlist(dList* list, FILE* fp);
 void print_dlist(dList* list);
 void pprint_dlist(dList* list);
+void fprintf_dlist_no_spaces(dList* list, FILE* fp);
+void print_dlist_no_spaces(dList* list);
+void pprint_dlist_no_spaces(dList* list);
 
 // char* List
 
@@ -83,5 +93,8 @@ int slist_contains(sList* list, char* element);
 void fprintf_slist(sList* list, FILE* fp, int quote);
 void print_slist(sList* list, int quote);
 void pprint_slist(sList* list, int quote);
+void fprintf_slist_no_spaces(sList* list, FILE* fp, int quote);
+void print_slist_no_spaces(sList* list, int quote);
+void pprint_slist_no_spaces(sList* list, int quote);
 
 #endif

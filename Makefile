@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS+=-Werror -Wall	
-LDLIBS=-lcurl -lpcre -lsocket
+LDLIBS=-lcurl -lpcre #-lsocket
 
 CFILES = \
 	src/debug.c \

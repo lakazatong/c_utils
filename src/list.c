@@ -108,6 +108,29 @@ void pprint_list(List* list, char* (*repr_function)(void*)) {
 	printf("\n");
 }
 
+void fprintf_list_no_spaces(List* list, FILE* fp,
+							char* (*repr_function)(void*)) {
+	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
+	for (size_t i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%s,", repr_function(list->elements[i]));
+	fprintf(fp, "%s", repr_function(list->elements[list->size - 1]));
+	fprintf(fp, "]");
+}
+
+void print_list_no_spaces(List* list, char* (*repr_function)(void*)) {
+	fprintf_list_no_spaces(list, stdout, repr_function);
+}
+
+void pprint_list_no_spaces(List* list, char* (*repr_function)(void*)) {
+	printf("list = ");
+	fprintf_list_no_spaces(list, stdout, repr_function);
+	printf("\n");
+}
+
 // int List
 
 iList* new_ilist(size_t initial_capacity) {
@@ -202,6 +225,28 @@ void print_ilist(iList* list) {
 void pprint_ilist(iList* list) {
 	printf("ilist = ");
 	fprintf_ilist(list, stdout);
+	printf("\n");
+}
+
+void fprintf_ilist_no_spaces(iList* list, FILE* fp) {
+	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
+	for (size_t i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%i,", list->elements[i]);
+	fprintf(fp, "%i", list->elements[list->size - 1]);
+	fprintf(fp, "]");
+}
+
+void print_ilist_no_spaces(iList* list) {
+	fprintf_ilist_no_spaces(list, stdout);
+}
+
+void pprint_ilist_no_spaces(iList* list) {
+	printf("ilist = ");
+	fprintf_ilist_no_spaces(list, stdout);
 	printf("\n");
 }
 
@@ -300,6 +345,28 @@ void print_dlist(dList* list) {
 void pprint_dlist(dList* list) {
 	printf("dlist = ");
 	fprintf_dlist(list, stdout);
+	printf("\n");
+}
+
+void fprintf_dlist_no_spaces(dList* list, FILE* fp) {
+	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
+	for (size_t i = 0; i < list->size - 1; i++)
+		fprintf(fp, "%f,", list->elements[i]);
+	fprintf(fp, "%f", list->elements[list->size - 1]);
+	fprintf(fp, "]");
+}
+
+void print_dlist_no_spaces(dList* list) {
+	fprintf_dlist_no_spaces(list, stdout);
+}
+
+void pprint_dlist_no_spaces(dList* list) {
+	printf("dlist = ");
+	fprintf_dlist_no_spaces(list, stdout);
 	printf("\n");
 }
 
@@ -424,5 +491,43 @@ void print_slist(sList* list, int quote) {
 void pprint_slist(sList* list, int quote) {
 	printf("slist = ");
 	fprintf_slist(list, stdout, quote);
+	printf("\n");
+}
+
+void fprintf_slist_quotes_no_spaces(sList* list, FILE* fp, char quote) {
+	fprintf(fp, "[");
+	if (list->size == 0) {
+		fprintf(fp, "]");
+		return;
+	}
+	for (size_t i = 0; i < list->size - 1; i++) {
+		if (list->elements[i])
+			fprintf(fp, "%c%s%c,", quote, list->elements[i], quote);
+		else
+			fprintf(fp, "NULL,");
+	}
+	if (list->elements[list->size - 1])
+		fprintf(fp, "%c%s%c", quote, list->elements[list->size - 1], quote);
+	else
+		fprintf(fp, "NULL");
+	fprintf(fp, "]");
+}
+
+void fprintf_slist_no_spaces(sList* list, FILE* fp, int quote) {
+	if (quote == 0) {
+		fprintf_slist_quotes_no_spaces(list, fp, '\0');
+		return;
+	}
+	fprintf_slist_quotes_no_spaces(
+		list, fp, (quote % 2 == 0) ? '"' * (quote / 2) : '\'' * quote);
+}
+
+void print_slist_no_spaces(sList* list, int quote) {
+	fprintf_slist_no_spaces(list, stdout, quote);
+}
+
+void pprint_slist_no_spaces(sList* list, int quote) {
+	printf("slist = ");
+	fprintf_slist_no_spaces(list, stdout, quote);
 	printf("\n");
 }
