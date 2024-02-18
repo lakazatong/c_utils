@@ -28,13 +28,13 @@
 	char *default_result_options_values[] = { "0", NULL, "1", NULL, NULL };
 
 	struct Results default_result = { .arguments = default_result_arguments,
-									  .options_values =
-										  default_result_options_values };
+										.options_values =
+											default_result_options_values };
 
 	struct ParseOptions parse_options = { .ignore_first = 1,
-										  .default_result = &default_result,
-										  .default_help = 1,
-										  .default_help_value = 1 };
+											.default_result = &default_result,
+											.default_help = 1,
+											.default_help_value = 1 };
 
 */
 
@@ -57,13 +57,13 @@
 	char *default_result_options_values[] = { "0", "0", "1", "0", "0" };
 
 	struct Results default_result = { .arguments = NULL,
-									  .options_values =
-										  default_result_options_values };
+										.options_values =
+											default_result_options_values };
 
 	struct ParseOptions parse_options = { .ignore_first = 1,
-										  .default_result = &default_result,
-										  .default_help = 0,
-										  .default_help_value = 0 };
+											.default_result = &default_result,
+											.default_help = 0,
+											.default_help_value = 0 };
 
 */
 
