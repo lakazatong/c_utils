@@ -14,3 +14,6 @@ CFILES = \
 OFILES = $(CFILES:.c=.o)
 
 test: test.o $(OFILES)
+
+clean:
+	$(RM) test.o $(OFILES)

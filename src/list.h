@@ -12,6 +12,7 @@ typedef struct {
 } List;
 
 List* new_list(size_t initial_capacity);
+void* list_get(List* list, size_t i);
 void free_list(List* list);
 void list_add(List* list, void* element);
 void set_list(List* list, void* value);
@@ -37,6 +38,7 @@ typedef struct {
 } iList;
 
 iList* new_ilist(size_t initial_capacity);
+int ilist_get(iList* list, size_t i);
 void free_ilist(iList* list);
 void ilist_add(iList* list, int element);
 int ilist_pop(iList* list, size_t index);
@@ -60,6 +62,7 @@ typedef struct {
 } dList;
 
 dList* new_dlist(size_t initial_capacity);
+double dlist_get(dList* list, size_t i);
 void free_dlist(dList* list);
 void dlist_add(dList* list, double element);
 double dlist_pop(dList* list, size_t index);
@@ -83,6 +86,7 @@ typedef struct {
 } sList;
 
 sList* new_slist(size_t initial_capacity);
+char* slist_get(sList* list, size_t i);
 void free_slist(sList* list);
 void slist_add(sList* list, char* element);
 char* slist_pop(sList* list, size_t index);

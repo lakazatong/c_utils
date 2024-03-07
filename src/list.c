@@ -29,6 +29,14 @@ List* new_list(size_t initial_capacity) {
 	return list;
 }
 
+void* list_get(List* list, size_t i) {
+	if (i >= list->size) {
+		ereport("tf?");
+		return NULL;
+	}
+	return list->elements[i];
+}
+
 void free_list(List* list) {
 	free(list->elements);
 	free(list);
@@ -151,6 +159,14 @@ iList* new_ilist(size_t initial_capacity) {
 	return list;
 }
 
+int ilist_get(iList* list, size_t i) {
+	if (i >= list->size) {
+		ereport("tf?");
+		return 0;
+	}
+	return list->elements[i];
+}
+
 void free_ilist(iList* list) {
 	free(list->elements);
 	free(list);
@@ -268,6 +284,14 @@ dList* new_dlist(size_t initial_capacity) {
 	list->size = 0;
 	list->capacity = initial_capacity;
 	return list;
+}
+
+double dlist_get(dList* list, size_t i) {
+	if (i >= list->size) {
+		ereport("tf?");
+		return 0;
+	}
+	return list->elements[i];
 }
 
 void free_dlist(dList* list) {
@@ -388,6 +412,14 @@ sList* new_slist(size_t initial_capacity) {
 	list->size = 0;
 	list->capacity = initial_capacity;
 	return list;
+}
+
+char* slist_get(sList* list, size_t i) {
+	if (i >= list->size) {
+		ereport("tf?");
+		return NULL;
+	}
+	return list->elements[i];
 }
 
 void free_slist(sList* list) {
